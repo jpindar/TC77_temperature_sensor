@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
    tc77.py
    use a RaspberryPi to read the temperature from a Microchip TC77 sensor via SPI
@@ -50,7 +51,7 @@ if __name__ == '__main__':
             data = decode_twos_comp(data,13)
             Celsius = float(data) * TEMPERATURE_STEP
             Fahrenheit = (Celsius * (9.0/5.0)) + 32
-            print(format(raw, '016b') + ", status bit " + str(status) + ", " + str(data) + ", " + format(Celsius, '7.3f') + "C, " + format(Fahrenheit, '7.3f') + "F ")
+            print(str(data) + ", " + format(Celsius, '7.3f') + "°C, " + format(Fahrenheit, '7.3f') + "°F")
             time.sleep(DELAY)
     except KeyboardInterrupt:
         pass
