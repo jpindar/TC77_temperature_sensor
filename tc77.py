@@ -32,26 +32,26 @@ def decode_twos_comp(val, bits):
         val = val - (1 << bits)
     return val
 
-def getRawTemp():
+def getTemperature():
     GPIO.output(CS_PIN, 0)
     raw = spi.readbytes(2)
     GPIO.output(CS_PIN, 1)
-    return raw
+    # status = (raw[1] & 0x04) != 0  # always true
+    raw = ((raw[0] <<8) + raw[1])
+    raw = raw >> 3 # remove 3 lsbs.
+    # now data is a 13 bit two's complement number  (16 bits - 3 = 13)
+    raw = decode_twos_comp(raw,13)
+    data = float(raw) * TEMPERATURE_STEP
+    return data
 
 
 if __name__ == '__main__':
     init()
     try:
         while True:
-            raw = getRawTemp()
-            status = (raw[1] & 0x04) != 0
-            raw = ((raw[0] <<8) + raw[1])
-            data = raw >> 3 # remove 3 lsbs.
-            # now data is a 13 bit two's complement number  (16 bits -3 = 13)
-            data = decode_twos_comp(data,13)
-            Celsius = float(data) * TEMPERATURE_STEP
+            Celsius = getTemperature()
             Fahrenheit = (Celsius * (9.0/5.0)) + 32
-            print(str(data) + ", " + format(Celsius, '7.3f') + "°C, " + format(Fahrenheit, '7.3f') + "°F")
+            print(format(Celsius, '7.3f') + "°C, " + format(Fahrenheit, '7.3f') + "°F")
             time.sleep(DELAY)
     except KeyboardInterrupt:
         pass
