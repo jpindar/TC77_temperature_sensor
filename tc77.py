@@ -18,7 +18,7 @@ spi = None
 
 def init():
     global spi
-    GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(GPIO.BCM)   # use the channel numbers on the Broadcom chip
     GPIO.setup(CS_PIN, GPIO.OUT)
     GPIO.output(CS_PIN, 1)
     spi = spidev.SpiDev()
@@ -37,12 +37,12 @@ def getTemperature():
     raw = spi.readbytes(2)
     GPIO.output(CS_PIN, 1)
     # status = (raw[1] & 0x04) != 0  # always true
-    raw = ((raw[0] <<8) + raw[1])
-    raw = raw >> 3 # remove 3 lsbs.
+    data = ((raw[0] <<8) + raw[1])
+    data = data >> 3 # remove 3 lsbs.
     # now data is a 13 bit two's complement number  (16 bits - 3 = 13)
-    raw = decode_twos_comp(raw,13)
-    data = float(raw) * TEMPERATURE_STEP
-    return data
+    data = decode_twos_comp(data,13)
+    float_data = float(data) * TEMPERATURE_STEP
+    return float_data
 
 
 if __name__ == '__main__':
