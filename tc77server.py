@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-   This uses a RaspberryPi to read the temperature from a Microchip TC77 sensor via SPI.
+   tc77server.py
+   This gets the temperature from tc77.py and serves it via Flask
 
 """
 from flask import Flask, request, render_template
@@ -59,6 +60,7 @@ def after_request(response):
 
 if __name__ == '__main__':
     tc77.init()
+    # enable Flask's development server
     # 0.0.0.0 means publicly available
     # app.run(host='0.0.0.0', port=80, debug=False)
     app.run(host='0.0.0.0', port=80, debug=True)
