@@ -36,8 +36,10 @@ def getTemperature():
     GPIO.output(CS_PIN, 0)
     raw = spi.readbytes(2)
     GPIO.output(CS_PIN, 1)
-    # status = (raw[1] & 0x04) != 0  # always true
+    status = (raw[1] & 0x04) != 0  # always true
     data = ((raw[0] <<8) + raw[1])
+    if __name__ == '__main__':
+        print(time.strftime('%Y/%m/%d %H:%M:%S') + ' status bit ' + str(status) + ' ' + format(data, '016b'), end='')
     data = data >> 3 # remove 3 lsbs.
     # now data is a 13 bit two's complement number  (16 bits - 3 = 13)
     data = decode_twos_comp(data,13)
