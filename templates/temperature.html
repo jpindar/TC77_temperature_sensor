@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+   <head>
+      <title>{{ title }}</title>
+      <link rel="stylesheet" href="../static/style.css" />
+      <style>
+      meter {
+        border: 2px solid black;
+        margin: 15px 15px 0px 15px;
+      }
+
+      </style>
+   </head>
+<html>
+   <body>
+      It is now <time>{{ time }}</time> <br>
+      The temperature is {{ tempC }}&deg;C ({{tempF}}&deg;F) <br>
+      <div id="meter">
+       0 <meter min = "0"  max = "100" value = {{ tempF }}></meter> 100
+      </div>
+   </body>
+</html>
+
